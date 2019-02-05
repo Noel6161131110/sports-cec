@@ -44,8 +44,9 @@ class StudentAdd(View):
             if(admno == -1):return render(request, self.template_name, {'form': form , "error" : True})
             name = form.cleaned_data["name"]
             if(Student.objects.filter(admission_number = admno , passout_year = year ).exists()):
-                                Student.objects.filter(admission_number = admno , passout_year = year ).delete()
-            Student(name = name , admission_number = admno , passout_year = year).save()
+                                Student.objects.filter(admission_number = admno , passout_year = year ).update(name = name , admission_number = admno , passout_year = year)
+            else:
+                Student(name = name , admission_number = admno , passout_year = year).save()
             return render(request, self.template_name, {'form': self.form_class(initial=self.initial) , "added" : True})
 
 
@@ -74,7 +75,8 @@ class UploadCSV(View):
                         admno , year = process_admission_number(row[pos])
                         if(admno != -1 ):
                             if(Student.objects.filter(admission_number = admno , passout_year = year ).exists()):
-                                Student.objects.filter(admission_number = admno , passout_year = year ).delete()
-                            Student(name = row[pos+1] , admission_number = admno , passout_year = year).save()
+                                Student.objects.filter(admission_number = admno , passout_year = year ).update(name = row[pos+1] , admission_number = admno , passout_year = year)
+                            else:
+                                Student(name = row[pos+1] , admission_number = admno , passout_year = year).save()
             return render(request , "csvupload.html" , {"success" : True})
 

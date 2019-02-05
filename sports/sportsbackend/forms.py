@@ -15,7 +15,8 @@ class EventCreateForm(forms.ModelForm):
 class ParticipationForm(forms.ModelForm):
         
         
-        
+        admission_number = forms.CharField(required=True , max_length=8)
+
         class Meta:
             model = Participate
             fields = (

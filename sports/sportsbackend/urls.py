@@ -16,13 +16,13 @@ Including another URLconf
 from django.urls import path, include
 from django.conf import settings
 
-from .views import Event,Participation
+from .views import Event,CreateParticipation
 from django.conf.urls.static import static
 
 urlpatterns = [
 
 path('addevent/', Event.as_view(), name='addevent'),
-path('addparticiapation/', Participation.as_view(), name='addevent'),
+path('addparticiapation/', CreateParticipation.as_view(), name='addevent'),
 
 ]
 urlpatterns += static(settings.MEDIA_URL,

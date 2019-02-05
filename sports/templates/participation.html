@@ -1,10 +1,22 @@
 
 
-    <h2 class="signuptext" align = center>CEC Sports Student Addition Form </h2>
+    <h2 class="signuptext" align = center>CEC Sports Student Participation Form </h2>
 
 {% if added %}
 
-<h4> Added Student. </h4>
+<h4> Added Student {{student}} For Event {{event}}. </h4>
+
+{% endif %}
+
+{% if repeat %}
+
+<h4> Student Already Added for this event </h4>
+
+{% endif %}
+
+{% if error %}
+
+<h4> No Student Found </h4>
 
 {% endif %}
 
