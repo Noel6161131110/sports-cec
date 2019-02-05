@@ -1,0 +1,9 @@
+<h2>Student Report for {{name}}</h2>
+
+<h3>Events Participated</h3>
+
+{% for i in data %}
+
+<h2> {{i.event.event_name}} Position <strong> {{i.position}} </strong> </h2>
+
+{% endfor %}

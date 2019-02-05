@@ -106,3 +106,20 @@ class ConfirmParticipationSelect(View):
             return render(request , self.second_template_name , {"data" : participateobjs , "form" : form , "nextposition" : nextposition , "event" : eventid , "eventname" : eventobj.event_name})
 
 
+class StudentReport(View):
+    form_class = AdmissionNumberForm
+    initial = {}
+    template_name = 'enteradmissionno.html'
+    second_template_name = 'studentreport.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            admno , year = process_admission_number(form.cleaned_data['admission_number'])
+            student = Student.objects.get(admission_number = admno , passout_year = year)
+            participateobjs = Participate.objects.all().filter(student = student )
+            return render(request,self.second_template_name , {"data" : participateobjs , "name" : student.name})
