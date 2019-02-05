@@ -11,9 +11,6 @@ class StudentCreationForm(forms.ModelForm):
         fields = (
         'admission_number',
         'name',
-        'passout_year',
-        'phonenumber',
-        'address'
         )
 
 

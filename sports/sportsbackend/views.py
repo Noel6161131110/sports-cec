@@ -23,10 +23,7 @@ class Event(View):
         if form.is_valid():
             student = form.save(commit=False)
             student.save()
-
             return render(request, self.template_name, {'form': self.form_class(initial=self.initial) , "added" : True})
-
-
         return render(request, self.template_name, {'form': form , "error" : True})
 
 
@@ -41,7 +38,3 @@ class Participation(View):
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
-
-		
-    def post(self, request, *args, **kwargs):
-		pass

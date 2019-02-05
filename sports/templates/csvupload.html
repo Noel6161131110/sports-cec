@@ -1,0 +1,23 @@
+{% load static %}
+
+<h3> Upload Csv File For Name Data </h3>
+
+{% if error %}
+
+<h4> Please Upload A Valid CSV File </h4>
+
+{%  endif %}
+
+{% if success %}
+
+<h4> Successfully Uploaded CSV File </h4>
+
+{%  endif %}
+
+
+  <form action="/student/uploadcsv/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myfile">
+    <button type="submit">Upload</button>
+  </form>
+

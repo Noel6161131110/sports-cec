@@ -8,6 +8,12 @@
 
 {% endif %}
 
+{% if error %}
+
+<h4> Invalid Data Provided </h4>
+
+{%  endif %}
+
     <div class="signupform">
     <form action="/student/addstudent/" method="post">
    {% csrf_token %}
