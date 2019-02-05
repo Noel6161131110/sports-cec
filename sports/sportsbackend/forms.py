@@ -22,3 +22,17 @@ class ParticipationForm(forms.ModelForm):
             fields = (
             'event',
             )
+
+class EventSelectForm(forms.ModelForm):
+
+
+    class Meta:
+        model = Participate
+        fields = (
+        'event',
+        )
+
+class AdmissionNumberForm(forms.Form):
+
+    admission_number = forms.CharField(required=True , max_length=8)
+

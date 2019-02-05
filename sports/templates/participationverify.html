@@ -1,0 +1,31 @@
+
+<h1> Event {{eventname}} </h1>
+
+{% for i in data %}
+
+{{i.student.admission_number}}/{{i.student.passout_year}} {{i.student.name}} {{i.position}} <br>
+
+{% endfor %}
+
+<h4> Current Position to be Entered  {{nextposition}}</h4>
+
+<div class="signupform">
+    <form action="/app/verifyparticiapation/" method="post">
+   {% csrf_token %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+        <input type="hidden" name="event" value={{event}}>
+       <input type="submit" class="btn btn-primary" value="Submit">
+
+    </form>
+  </div>
+
+
+

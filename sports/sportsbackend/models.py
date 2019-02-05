@@ -19,4 +19,4 @@ class Participate(models.Model):
     student = models.ForeignKey('student.Student' , on_delete=models.CASCADE)
     event = models.ForeignKey("Event" , on_delete=models.CASCADE)
     year = models.ForeignKey("Year" , on_delete=models.CASCADE)
-    position = models.IntegerField(default=-1)
+    position = models.IntegerField(default=0)

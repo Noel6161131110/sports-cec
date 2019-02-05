@@ -1,0 +1,28 @@
+
+
+    <h2 class="signuptext" align = center>CEC Sports Student Addition Form </h2>
+
+{% if error %}
+
+<h4> No Student Registered </h4>
+
+{% endif %}
+    <div class="signupform">
+    <form action="/app/verifyparticiapation/" method="get">
+   {% csrf_token %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+       <input type="submit" class="btn btn-primary" value="Submit">
+
+    </form>
+  </div>
+
+
