@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.urls import path, include
 
+from .views import Event,Participation
 
 urlpatterns = [
+
+path('addevent/', Event.as_view(), name='addevent'),
+path('addparticiapation/', Participation.as_view(), name='addevent'),
 
 ]

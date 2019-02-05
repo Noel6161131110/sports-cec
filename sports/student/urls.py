@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.urls import path, include
 
+from .views import Student
 
 urlpatterns = [
+
+path('addstudent/', Student.as_view(), name='addstudent'),
 
 ]
