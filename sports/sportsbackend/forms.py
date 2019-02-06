@@ -21,6 +21,7 @@ class ParticipationForm(forms.ModelForm):
             model = Participate
             fields = (
             'event',
+
             )
 
 class EventSelectForm(forms.ModelForm):
@@ -32,7 +33,23 @@ class EventSelectForm(forms.ModelForm):
         'event',
         )
 
-class AdmissionNumberForm(forms.Form):
+class AdmissionNumberForm(forms.ModelForm):
 
-    admission_number = forms.CharField(required=True , max_length=8)
+        admission_number = forms.CharField(required=True , max_length=8)
 
+        class Meta:
+            model = Participate
+            fields = (
+            'position',
+
+            )
+        
+        def __init__(self, *args, **kwargs):
+            super(AdmissionNumberForm, self).__init__(*args, **kwargs)
+            self.fields['position'].widget.attrs.update({
+                    'class': 'form-control',
+                })
+            self.fields['admission_number'].widget.attrs.update({
+                    'class': 'form-control',
+                })
+        

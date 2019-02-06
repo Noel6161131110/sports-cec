@@ -81,13 +81,10 @@ class ConfirmParticipationSelect(View):
             participate = form.save(commit=False)
             yearobj = Year.objects.get(selected = True)
             participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-position')
-            if(participateobjs.count() == 0):
+            if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
-            nextposition = participateobjs.aggregate(Max('position'))['position__max'] + 1
-
-
             form = self.second_form_class(initial=self.initial)
-            return render(request , self.second_template_name , {"data" : participateobjs , "form" : form , "nextposition" : nextposition , "event" : participate.event.id  , "eventname" :participate.event.event_name})
+            return render(request , self.second_template_name , {"data" : participateobjs , "form" : form ,  "event" : participate.event.id  , "eventname" :participate.event.event_name})
 
 
     
@@ -97,13 +94,14 @@ class ConfirmParticipationSelect(View):
             admno , year = process_admission_number(form.cleaned_data['admission_number'])
             eventid = request.POST.get("event",0)
             eventobj = Event.objects.get(id = eventid)
-            student = Student.objects.get(admission_number = admno , passout_year = year)
             yearobj = Year.objects.get(selected = True)
             participateobjs = Participate.objects.all().filter(event = eventobj , year = yearobj ).order_by('-position')
-            nextposition = participateobjs.aggregate(Max('position'))['position__max'] + 1
+            if(Student.objects.filter(admission_number = admno , passout_year = year).count() == 0):
+                return render(request , self.second_template_name , {"data" : participateobjs , "form" : form , "event" : eventid , "eventname" : eventobj.event_name , "error2" : True})                
+            student = Student.objects.get(admission_number = admno , passout_year = year)
             participateobj = participateobjs.filter(student = student)
-            participateobj.update(position = nextposition)
-            return render(request , self.second_template_name , {"data" : participateobjs , "form" : form , "nextposition" : nextposition , "event" : eventid , "eventname" : eventobj.event_name})
+            participateobj.update(position = form.cleaned_data['position'])
+            return render(request , self.second_template_name , {"data" : participateobjs , "form" : form  , "event" : eventid , "eventname" : eventobj.event_name})
 
 
 class StudentReport(View):
@@ -120,6 +118,53 @@ class StudentReport(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             admno , year = process_admission_number(form.cleaned_data['admission_number'])
-            student = Student.objects.get(admission_number = admno , passout_year = year)
+            if (Student.objects.filter(admission_number = admno , passout_year = year).count() == 0):
+                form = self.form_class(initial=self.initial)
+                return render(request, self.template_name, {'form': form , "error" : True})
+            student =Student.objects.get(admission_number = admno , passout_year = year)
             participateobjs = Participate.objects.all().filter(student = student )
             return render(request,self.second_template_name , {"data" : participateobjs , "name" : student.name})
+
+class Disqualify(View):
+
+    form_class = ParticipationForm
+    initial = {}
+    template_name = 'disqualify.html'
+    second_template_name = 'disqualifyconfirm.html'
+
+    def get(self, request, *args, **kwargs):
+        if(request.GET.get("event",0) == 0):
+            form = self.form_class(initial=self.initial)
+            return render(request, self.template_name, {'form': form})
+        form = self.form_class(request.GET)
+        if form.is_valid():
+            admno , year = process_admission_number(form.cleaned_data['admission_number'])
+            participate = form.save(commit=False)
+            student = Student.objects.get(admission_number = admno , passout_year = year)
+            yearobj = Year.objects.get(selected = True)
+            participateobjs = Participate.objects.filter(student = student , year = yearobj , event = participate.event )
+            if(participateobjs.exists()):
+                return render(request , self.second_template_name , {"student" : student , "event" : participate.event } ) 
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form , "error" : True})         
+
+
+    def post(self, request, *args, **kwargs):
+        eventid = request.POST.get("event" , 0)
+        studentid = request.POST.get("student" , 0)
+        if(eventid == 0 or studentid == 0):
+            return HttpResponseRedirect("/app/disqualify")
+        student  = Student.objects.get(id = studentid)
+        event = Event.objects.get(id = eventid)
+        yearobj = Year.objects.get(selected = True)
+        cposition = Participate.objects.get(student = student , year = yearobj ,  event = event).position
+        Participate.objects.get(student = student , year = yearobj ,  event = event).delete()
+        if cposition == 0:
+            form = self.form_class(initial=self.initial)
+            return render(request, self.template_name, {'form': form , "removed" : True})          
+        for i in Participate.objects.all().filter(event = event , year = yearobj , position__gt = cposition  ):
+            Participate.objects.filter(student = i.student , year = yearobj ,  event = event).update(position = i.position - 1)
+        
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form , "removed" : True})
+
