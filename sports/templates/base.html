@@ -1,0 +1,67 @@
+{% spaceless %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="Description" content="CEC Online Sports Management Portal">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <!--
+  <meta property="og:title" content="CECOnline">
+  <meta property="og:site_name" content="CEC">
+  <meta property="og:url" content="-">
+  <meta property="og:description" content="-">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="{% static 'images/image.png' %}">
+-->
+  <title>CEC Sports Management</title>
+
+  {% block css %}
+  {% endblock %}
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+
+
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+  <nav class="navbar">
+    <!--
+    To Be Implemented
+    -->
+  </nav>
+  <div class="container">
+
+ {% block body %}
+
+{% endblock %}
+
+</div>
+
+
+<footer class="footer">
+<!--
+To Be Implemented
+-->
+</footer>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+{% block javascript %}
+{% endblock %}
+
+<!-- This site was developed by Ewenture |c|-->
+
+
+</body>
+
+</html>
+{% endspaceless %}

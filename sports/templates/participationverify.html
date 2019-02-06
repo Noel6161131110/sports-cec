@@ -1,13 +1,54 @@
 
-<h1> Event {{eventname}} </h1>
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+<h2 class="signuptext" align = center>Event {{eventname}} </h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Admission No</th>
+      <th scope="col">Name</th>
+      <th scope="col">Position</th>
+    </tr>
+  </thead>
+  <tbody>
 
 {% for i in data %}
 
-{{i.student.admission_number}}/{{i.student.passout_year}} {{i.student.name}} {{i.position}} <br>
+    <tr>
+      <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
+      <td>{{i.student.name}}</td>
+      <td>{{i.get_position_display}}</td>
+      
+    </tr>
+
+
+   <br>
 
 {% endfor %}
 
-<h4> Current Position to be Entered  {{nextposition}}</h4>
+  
+  </tbody>
+</table>
+
+
+
+{% if error %}
+
+
+<h6> Student Already Entered </h6>
+{% endif %}
+
+
+{% if error2 %}
+
+
+<h6> Student Does not Exist in Event </h6>
+{% endif %}
 
 <div class="signupform">
     <form action="/app/verifyparticiapation/" method="post">
@@ -26,6 +67,14 @@
 
     </form>
   </div>
+
+
+
+{% endblock %}
+
+
+
+
 
 
 

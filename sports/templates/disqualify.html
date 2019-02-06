@@ -1,11 +1,19 @@
- {% if error %}
 
-<h4> No Student Found </h4>
+
+{% if error %}
+
+<h4> Student Not Registered For Event </h4>
 
 {% endif %}
- 
+
+{% if removed %}
+
+<h4> Student Succesfully Removed </h4>
+
+{% endif %}
+
   <div class="signupform">
-    <form action="/app/studentreport/" method="post">
+    <form action="/app/disqualify/" method="get">
    {% csrf_token %}
     {% for field in form %}
         <div class="fieldWrapper">

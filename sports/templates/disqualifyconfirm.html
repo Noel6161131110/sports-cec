@@ -1,0 +1,6 @@
+    <h1> Confirm Deletion of {{student.name}} for {{event.event_name}} </h1>
+    <form action="/app/disqualify/" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="event" value={{event.id}} >
+    <input type="hidden" name="student" value = {{student.id}}>
+    <input type="submit" value="Confirm">
