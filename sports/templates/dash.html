@@ -1,22 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
 
-<a href ="/student/addstudent"> ADD Student </a><br>
+{% block body %}
 
+    <h1 class="signuptext" align = center>CEC Sports Manager </h1>
+    <br>
 
-<a href ="/student/uploadcsv"> Upload Students </a><br>
+<button  class="btn btn-outline-primary btn-block"  onclick="location.href='/student/addstudent'" > Add Student </button><br>
 
+<button  class="btn btn-outline-primary btn-block"  onclick="location.href='/student/uploadcsv'"> Upload Students </button><br>
 
+<button  class="btn btn-outline-primary btn-block"  onclick="location.href='/app/addevent'"> Add Event </button><br>
 
-<a href ="/app/addevent"> ADD Event </a><br>
+<button  class="btn btn-outline-primary btn-block"  onclick="location.href='/app/addparticiapation'"> Register Student for Event </button><br>
 
+<button  class="btn btn-outline-primary btn-block"  onclick="location.href='/app/disqualify'"> Disqualify Student for Event </button><br>
 
-<a href ="/app/addparticiapation"> Register Student for Event </a><br>
+<button  class="btn btn-outline-primary btn-block"  onclick="location.href='/app/verifyparticiapation'"> Enter Event Results </button><br>
 
-<a href ="/app/disqualify"> Disqualify Student for Event </a><br>
+<button  class="btn btn-outline-primary btn-block"  onclick="location.href='/app/eventreport'"> Event Reports </button><br>
 
-<a href ="/app/verifyparticiapation"> Enter Event Results </a><br>
+<button  class="btn btn-outline-primary btn-block"  onclick="location.href='/app/studentreport'"> Student Reports </button><br>
 
-
-<a href ="/app/eventreport"> Event Reports </a><br>
-
-
-<a href ="/app/studentreport"> Student Reports </a><br>
+{% endblock %}
