@@ -35,7 +35,6 @@ class EventSelectForm(forms.ModelForm):
 
 class AdmissionNumberForm(forms.ModelForm):
 
-        admission_number = forms.CharField(required=True , max_length=8)
 
         class Meta:
             model = Participate
@@ -43,6 +42,8 @@ class AdmissionNumberForm(forms.ModelForm):
             'position',
 
             )
+        admission_number = forms.CharField(required=True , max_length=8)
+
         
         def __init__(self, *args, **kwargs):
             super(AdmissionNumberForm, self).__init__(*args, **kwargs)

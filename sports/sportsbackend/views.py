@@ -84,7 +84,7 @@ class ConfirmParticipationSelect(View):
             if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
             form = self.second_form_class(initial=self.initial)
-            return render(request , self.second_template_name , {"data" : participateobjs , "form" : form ,  "event" : participate.event.id  , "eventname" :participate.event.event_name})
+            return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "form" : form ,  "event" : participate.event.id  , "eventname" :participate.event.event_name})
 
 
     
@@ -101,7 +101,7 @@ class ConfirmParticipationSelect(View):
             student = Student.objects.get(admission_number = admno , passout_year = year)
             participateobj = participateobjs.filter(student = student)
             participateobj.update(position = form.cleaned_data['position'])
-            return render(request , self.second_template_name , {"data" : participateobjs , "form" : form  , "event" : eventid , "eventname" : eventobj.event_name})
+            return render(request , self.second_template_name , {"year" : yearobj ,"data" : participateobjs , "form" : form  , "event" : eventid , "eventname" : eventobj.event_name})
 
 
 class StudentReport(View):

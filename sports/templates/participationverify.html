@@ -5,7 +5,7 @@
 
 {% block body %}
 
-<h2 class="signuptext" align = center>Event {{eventname}} </h2>
+<h2 class="signuptext" align = center>Event {{eventname}} For Year {{year.year}} </h2>
 
 <table class="table">
   <thead>
@@ -54,6 +54,7 @@
     <form action="/app/verifyparticiapation/" method="post">
    {% csrf_token %}
     {% for field in form %}
+    <br>
         <div class="fieldWrapper">
             {{ field.errors }}
             {{ field.label_tag }} {{ field }}
@@ -62,6 +63,7 @@
             {% endif %}
         </div>
     {% endfor %}
+        <br>
         <input type="hidden" name="event" value={{event}}>
        <input type="submit" class="btn btn-primary" value="Submit">
 
