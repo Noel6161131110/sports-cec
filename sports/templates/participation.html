@@ -1,5 +1,7 @@
+{% extends 'base.html' %}
+{% load static %}
 
-
+{% block body %}
     <h2 class="signuptext" align = center>CEC Sports Student Participation Form </h2>
 
 {% if added %}
@@ -24,6 +26,7 @@
     <form action="/app/addparticiapation/" method="post">
    {% csrf_token %}
     {% for field in form %}
+    <br>
         <div class="fieldWrapper">
             {{ field.errors }}
             {{ field.label_tag }} {{ field }}
@@ -32,10 +35,11 @@
             {% endif %}
         </div>
     {% endfor %}
-
+    <br>
        <input type="submit" class="btn btn-primary" value="Submit">
 
     </form>
   </div>
 
 
+{% endblock %}

@@ -1,6 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
 
+{% block body %}
 
-    <h2 class="signuptext" align = center>CEC Sports Student Addition Form </h2>
+    <h2 class="signuptext" align = center>CEC Sports Student Participation Form </h2>
 
 {% if error %}
 
@@ -19,10 +22,11 @@
             {% endif %}
         </div>
     {% endfor %}
-
+<br>
        <input type="submit" class="btn btn-primary" value="Submit">
 
     </form>
   </div>
 
+{% endblock %}
 

@@ -12,6 +12,13 @@ class EventCreateForm(forms.ModelForm):
         'event_name',
         )
 
+    def __init__(self, *args, **kwargs):
+        super(EventCreateForm, self).__init__(*args, **kwargs)
+        self.fields['event_name'].widget.attrs.update({
+                'class': 'form-control',
+            })
+
+
 class ParticipationForm(forms.ModelForm):
         
         
@@ -23,6 +30,14 @@ class ParticipationForm(forms.ModelForm):
             'event',
 
             )
+        def __init__(self, *args, **kwargs):
+            super(ParticipationForm, self).__init__(*args, **kwargs)
+            self.fields['event'].widget.attrs.update({
+                    'class': 'form-control',
+                })
+            self.fields['admission_number'].widget.attrs.update({
+                    'class': 'form-control',
+                })
 
 class EventSelectForm(forms.ModelForm):
 
@@ -32,6 +47,12 @@ class EventSelectForm(forms.ModelForm):
         fields = (
         'event',
         )
+
+    def __init__(self, *args, **kwargs):
+        super(EventSelectForm, self).__init__(*args, **kwargs)
+        self.fields['event'].widget.attrs.update({
+                'class': 'form-control',
+            })
 
 class AdmissionNumberForm(forms.ModelForm):
 

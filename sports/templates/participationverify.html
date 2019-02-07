@@ -5,9 +5,25 @@
 
 {% block body %}
 
+<script>
+window.onload = function() {
+
+$('#resulttable').on('click', '.clickable-row', function(event) {
+  if($(this).hasClass('table-primary')){
+    $(this).removeClass('table-primary'); 
+
+  } else {
+    $('#id_admission_number').val($(this).closest('tr').find('th').text());
+    $(this).addClass('table-primary').siblings().removeClass('table-primary');
+  }
+});
+
+};
+</script>
+
 <h2 class="signuptext" align = center>Event {{eventname}} For Year {{year.year}} </h2>
 
-<table class="table">
+<table class="table table-striped" id="resulttable">
   <thead>
     <tr>
       <th scope="col">Admission No</th>
@@ -19,7 +35,7 @@
 
 {% for i in data %}
 
-    <tr>
+    <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
       <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
       <td>{{i.student.name}}</td>
       <td>{{i.get_position_display}}</td>
