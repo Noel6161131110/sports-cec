@@ -1,17 +1,19 @@
 
+
 {% extends 'base.html' %}
 {% load static %}
 
 {% block body %}
 
-<h2>Student Report for {{name}}</h2>
 
+<br>
+<h2 class="signuptext" align = center>Event {{eventname}} For Year {{year.year}} </h2>
 
 <table class="table table-striped" id="resulttable">
   <thead>
     <tr>
-      <th scope="col">Event Name</th>
-      <th scope="col">Year</th>
+      <th scope="col">Admission No</th>
+      <th scope="col">Name</th>
       <th scope="col">Position</th>
     </tr>
   </thead>
@@ -20,8 +22,8 @@
 {% for i in data %}
 
     <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
-      <th scope="row">{{i.event.event_name}}</th>
-      <td>{{i.year.year}}</td>
+      <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
+      <td>{{i.student.name}}</td>
       <td>{{i.get_position_display}}</td>
       
     </tr>
@@ -37,4 +39,13 @@
 
 
 
+
+
 {% endblock %}
+
+
+
+
+
+
+

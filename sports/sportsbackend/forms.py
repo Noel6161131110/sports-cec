@@ -74,4 +74,17 @@ class AdmissionNumberForm(forms.ModelForm):
             self.fields['admission_number'].widget.attrs.update({
                     'class': 'form-control',
                 })
+
+class StudentReportForm(forms.Form):
+
+
+
+        admission_number = forms.CharField(required=True , max_length=8)
+
+        
+        def __init__(self, *args, **kwargs):
+            super(StudentReportForm, self).__init__(*args, **kwargs)
+            self.fields['admission_number'].widget.attrs.update({
+                    'class': 'form-control',
+                })
         

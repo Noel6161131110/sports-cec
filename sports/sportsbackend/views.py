@@ -7,7 +7,7 @@ from .models import Event, Year, Participate
 
 from django.views import View
 
-from .forms import EventCreateForm, ParticipationForm, EventSelectForm, AdmissionNumberForm
+from .forms import EventCreateForm, ParticipationForm, EventSelectForm, AdmissionNumberForm , StudentReportForm
 
 from student.views import process_admission_number
 
@@ -105,9 +105,9 @@ class ConfirmParticipationSelect(View):
 
 
 class StudentReport(View):
-    form_class = AdmissionNumberForm
+    form_class = StudentReportForm
     initial = {}
-    template_name = 'enteradmissionno.html'
+    template_name = 'selectstudentreport.html'
     second_template_name = 'studentreport.html'
 
     def get(self, request, *args, **kwargs):
@@ -168,3 +168,24 @@ class Disqualify(View):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form , "removed" : True})
 
+class EventReport(View):
+
+    form_class = EventSelectForm
+    initial = {}
+    template_name = 'reportselectevent.html'
+    second_template_name = 'eventreport.html'
+
+    def get(self, request, *args, **kwargs):
+        if(request.GET.get("event",0) == 0):
+            form = self.form_class(initial=self.initial)
+            return render(request, self.template_name, {'form': form})
+       
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            participate = form.save(commit=False)
+            yearobj = Year.objects.get(selected = True)
+            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-position')
+            if(participateobjs.count() == 0 ):
+                return render(request, self.template_name, {'form': form , "error" :True})
+            return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })
