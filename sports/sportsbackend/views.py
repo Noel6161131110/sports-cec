@@ -16,6 +16,10 @@ from student.models import Student
 from django.db.models import Max
 
 
+from django.contrib.auth.decorators import login_required, permission_required
+from django.utils.decorators import method_decorator
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class AddEvent(View):
     form_class = EventCreateForm
     initial = {}
@@ -34,7 +38,7 @@ class AddEvent(View):
         return render(request, self.template_name, {'form': form , "error" : True})
 
 
-
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class CreateParticipation(View):
 
     form_class = ParticipationForm
@@ -64,6 +68,7 @@ class CreateParticipation(View):
         return render(request, self.template_name, {'form': form , "error" : True})
 
 
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class ConfirmParticipationSelect(View):
 
     form_class = EventSelectForm
@@ -104,6 +109,7 @@ class ConfirmParticipationSelect(View):
             return render(request , self.second_template_name , {"year" : yearobj ,"data" : participateobjs , "form" : form  , "event" : eventid , "eventname" : eventobj.event_name})
 
 
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class StudentReport(View):
     form_class = StudentReportForm
     initial = {}
@@ -125,6 +131,8 @@ class StudentReport(View):
             participateobjs = Participate.objects.all().filter(student = student )
             return render(request,self.second_template_name , {"data" : participateobjs , "name" : student.name})
 
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class Disqualify(View):
 
     form_class = ParticipationForm
@@ -168,6 +176,8 @@ class Disqualify(View):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form , "removed" : True})
 
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class EventReport(View):
 
     form_class = EventSelectForm

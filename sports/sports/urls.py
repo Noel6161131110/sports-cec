@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("" , views.dash),
     path('student/' , include("student.urls")),
-    path('app/' , include("sportsbackend.urls"))
+    path('app/' , include("sportsbackend.urls")),
+    path('account/' , include("user.urls"))
 
 ]

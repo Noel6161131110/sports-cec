@@ -15,6 +15,11 @@ from .forms import StudentCreationForm
 
 import csv
 
+
+from django.contrib.auth.decorators import login_required, permission_required
+from django.utils.decorators import method_decorator
+
+
 def process_admission_number(admno):
     if(len(admno) <= 3 ):return (-1,-1)
     if( admno.count("/") != 1  ):return (-1,-1)
@@ -28,6 +33,7 @@ def process_admission_number(admno):
         return (-1,-1)
     return (num,year)
 
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class StudentAdd(View):
     form_class = StudentCreationForm
     initial = {}
@@ -55,6 +61,7 @@ class StudentAdd(View):
 
 
 
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class UploadCSV(View):
 
     def get(self, request, *args, **kwargs):
