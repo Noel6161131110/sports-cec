@@ -1,7 +1,8 @@
 
 
 from django.urls import path, include
-from django.conf import settings
+
+from django.contrib.auth import views as auth_views
 
 from .views import AddEvent,CreateParticipation,ConfirmParticipationSelect,StudentReport,Disqualify,EventReport
 from django.conf.urls.static import static
@@ -14,6 +15,8 @@ path('verifyparticiapation/', ConfirmParticipationSelect.as_view(), name='verify
 path('studentreport/', StudentReport.as_view(), name='studentreport'),
 path('disqualify/', Disqualify.as_view(), name='disqualify'),
 path('eventreport/', EventReport.as_view(), name='eventreport'),
+
+
 
 ]
 

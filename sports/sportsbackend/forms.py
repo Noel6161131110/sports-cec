@@ -4,6 +4,9 @@ from .models import Event,Participate
 
 from django.core.validators import MaxLengthValidator
 
+from django.contrib.auth.forms import AuthenticationForm
+
+
 class EventCreateForm(forms.ModelForm):
 
     class Meta:
