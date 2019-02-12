@@ -203,3 +203,50 @@ class EventReport(View):
             if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
             return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })
+
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
+class TrackCard(View):
+
+    form_class = EventSelectForm
+    initial = {}
+    template_name = 'trackselect.html'
+    second_template_name = 'scorecardtrack.html'
+
+    def get(self, request, *args, **kwargs):
+        if(request.GET.get("event",0) == 0):
+            form = self.form_class(initial=self.initial)
+            return render(request, self.template_name, {'form': form})
+       
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            participate = form.save(commit=False)
+            yearobj = Year.objects.get(selected = True)
+            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-position')
+            if(participateobjs.count() == 0 ):
+                return render(request, self.template_name, {'form': form , "error" :True})
+            return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
+class FieldCard(View):
+
+    form_class = EventSelectForm
+    initial = {}
+    template_name = 'fieldselect.html'
+    second_template_name = 'scorecardfield.html'
+
+    def get(self, request, *args, **kwargs):
+        if(request.GET.get("event",0) == 0):
+            form = self.form_class(initial=self.initial)
+            return render(request, self.template_name, {'form': form})
+       
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            participate = form.save(commit=False)
+            yearobj = Year.objects.get(selected = True)
+            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-position')
+            if(participateobjs.count() == 0 ):
+                return render(request, self.template_name, {'form': form , "error" :True})
+            return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })

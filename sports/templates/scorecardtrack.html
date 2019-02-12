@@ -1,0 +1,94 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+<br>
+<h2 class="signuptext" align = center> Score Sheet Card for Track Event {{eventname}} For Year {{year.year}} </h2>
+
+<table class="table table-bordered" id="resulttable">
+  <thead>
+    <tr>
+          <th scope="col">SL No</th>
+      <th scope="col">Admission No</th>
+      <th scope="col">Name</th>
+      <th scope="col">Chest No</th>
+    </tr>
+  </thead>
+  <tbody>
+
+{% for i in data %}
+
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{i.student.admission_number}}/{{i.student.passout_year}}</td>
+      <td>{{i.student.name}}</td>
+      {% if i.cno.cno %}
+        <td>{{i.cno.cno}}</td>
+      {% else %}
+        <td>UND</td>
+      {% endif %}      
+      
+    </tr>
+
+
+   <br>
+
+{% endfor %}
+
+  
+  </tbody>
+</table>
+
+<br>
+
+<table class="table table-bordered" id="resulttable">
+  
+  <tbody>
+    <tr>
+      <th  style="width: 16.66%" scope="row">First</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      
+    </tr>
+    <tr>
+      <th scope="row">Second</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      
+    </tr>
+    <tr>
+      <th scope="row">Third</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      
+    </tr>
+    <tr>
+      <th scope="row">Fourth</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+<h5>Signature of Chief Judge</h5>
+
+{% endblock %}
+
+
+
+
+
+
+
