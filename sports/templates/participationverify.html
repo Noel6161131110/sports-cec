@@ -28,6 +28,7 @@ $('#resulttable').on('click', '.clickable-row', function(event) {
     <tr>
       <th scope="col">Admission No</th>
       <th scope="col">Name</th>
+      <th scope="col">Chest No</th>
       <th scope="col">Position</th>
     </tr>
   </thead>
@@ -38,6 +39,11 @@ $('#resulttable').on('click', '.clickable-row', function(event) {
     <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
       <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
       <td>{{i.student.name}}</td>
+      {% if i.cno.cno %}
+        <td>{{i.cno.cno}}</td>
+      {% else %}
+        <td>UND</td>
+      {% endif %}
       <td>{{i.get_position_display}}</td>
       
     </tr>

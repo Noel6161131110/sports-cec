@@ -11,7 +11,7 @@ from .forms import EventCreateForm, ParticipationForm, EventSelectForm, Admissio
 
 from student.views import process_admission_number
 
-from student.models import Student
+from student.models import Student, ChestNo
 
 from django.db.models import Max
 
@@ -58,10 +58,14 @@ class CreateParticipation(View):
                 student = Student.objects.get(admission_number = admno , passout_year = year)
                 yearobj = Year.objects.get(selected = True)
                 participate = form.save(commit=False)
-                if(Participate.objects.filter(student = student , year = yearobj , event = participate.event ).exists() ):
+                cobj = None
+                if( ChestNo.objects.filter(student = student , year = yearobj).exists() ):
+                    cobj = ChestNo.objects.get(student = student , year = yearobj)
+                if(Participate.objects.filter(student = student , year = yearobj , event = participate.event  ).exists() ):
                     return render(request, self.template_name, {'form': form , "repeat" : True})
                 participate.student = student
                 participate.year = yearobj
+                participate.cno = cobj
                 participate.save()
                 return render(request, self.template_name, {'form': self.form_class(initial=self.initial) , "added" : True , "student" : participate.student.name , "event" : participate.event.event_name  })
             return render(request, self.template_name, {'form': form , "error" : True})

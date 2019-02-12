@@ -39,7 +39,7 @@ class SignupView(View):
             user.set_password(form.cleaned_data["password"])
             user.save()
 
-            return HttpResponseRedirect('/account/login?new=1')
+            return HttpResponseRedirect('/')
 
 
         return render(request, self.template_name, {'form': form , "error" : True})

@@ -7,11 +7,12 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 
-from .models import Student
+from .models import Student , ChestNo
+from sportsbackend.models import Year , Participate
 
 from django.views import View
 
-from .forms import StudentCreationForm
+from .forms import StudentCreationForm, ChestNumberUpdation
 
 import csv
 
@@ -87,3 +88,36 @@ class UploadCSV(View):
                                 Student(name = row[pos+1] , admission_number = admno , passout_year = year).save()
             return render(request , "csvupload.html" , {"success" : True})
 
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
+class CNo(View):
+    form_class = ChestNumberUpdation
+    initial = {}
+    template_name = 'studentsno.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            admno , year = process_admission_number(form.cleaned_data["admission_number"])
+            if(admno == -1):return render(request, self.template_name, {'form': form , "error" : True})
+            if(Student.objects.filter(admission_number = admno , passout_year = year ).exists()):
+                student = Student.objects.get(admission_number = admno , passout_year = year)
+                yearobj = Year.objects.get(selected = True)
+                cnobj = None
+                if( ChestNo.objects.filter(student = student , year = yearobj ).exists() ):
+                    ChestNo.objects.filter(student = student , year = yearobj).update(cno = form.cleaned_data["cno"])
+                    cnobj = ChestNo.objects.get(student = student , year = yearobj)
+                else:
+                    cnobj = ChestNo(student = student , year = yearobj , cno = form.cleaned_data["cno"])
+                    cnobj.save()
+                Participate.objects.all().filter(student = student , year = yearobj).update(cno = cnobj  )
+                return render(request , self.template_name , {'form' : form , "done" : True , "student" : student , "cno" : form.cleaned_data["cno"]})
+            else:
+                return render(request, self.template_name, {'form': form , "no" : True})
+                
+        return render(request, self.template_name, {'form': form , "error" : True})
