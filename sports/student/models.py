@@ -13,7 +13,9 @@ class Student(models.Model):
 class DutyLeave(models.Model):
     student = models.ForeignKey('Student' , on_delete=models.CASCADE)
     date = models.DateField()
-    hour = models.IntegerField()
+    year = models.ForeignKey('sportsbackend.Year' , on_delete=models.CASCADE)
+    hour = models.CharField(max_length=100 )
+    is_approved = models.BooleanField(default = False)
 
 
 class ChestNo(models.Model):

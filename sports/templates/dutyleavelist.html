@@ -1,0 +1,64 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+<br>
+<h2 class="signuptext" align = center>Duty Leave Requests for {{year.year}} </h2>
+
+<table class="table table-striped" id="resulttable">
+  <thead>
+    <tr>
+      <th scope="col">Admission No</th>
+      <th scope="col">Name</th>
+      <th scope="col">Date</th>
+      <th scope="col">Hours</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+
+{% for i in data %}
+
+    <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
+      <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
+      <td>{{i.student.name}}</td>
+      <td>{{i.date}}</td>
+       <td>{{i.hour}}</td>
+      {% if i.is_approved %}
+        <td>Approved</td>
+      <td> <a href="/student/dutyleaveconfirm?confirm=0&id={{i.id}}" > Reject  </td>
+      
+      {% else %}
+        <td>Rejected</td>
+        <td> <a href="/student/dutyleaveconfirm?confirm=1&id={{i.id}}" > Approve  </td>
+      
+      {% endif %}      
+
+    </tr>
+
+
+   <br>
+
+{% endfor %}
+
+  
+  </tbody>
+</table>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+

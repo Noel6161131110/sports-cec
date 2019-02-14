@@ -1,0 +1,30 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <h2 class="signuptext" align = center>CEC Sports Date Select Form </h2>
+
+
+    <div class="signupform">
+    <form action="/student/dutyleavereport/" method="post">
+   {% csrf_token %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <br>
+       <input type="submit" class="btn btn-primary" value="Submit">
+
+    </form>
+  </div>
+
+{% endblock %}
+

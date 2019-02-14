@@ -1,0 +1,42 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <h2 class="signuptext" align = center>CEC Sports Duty Leave Addition Form </h2>
+
+{% if done %}
+
+<h4> Added Duty Leave Request. </h4>
+
+{% endif %}
+
+
+{% if no %}
+
+<h4> No Student Found </h4>
+
+{% endif %}
+
+    <div class="signupform">
+    <form action="/student/dutyleaveadd/" method="post">
+   {% csrf_token %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <br>
+       <input type="submit" class="btn btn-primary" value="Submit">
+
+    </form>
+  </div>
+
+{% endblock %}
+
