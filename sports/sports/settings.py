@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-'''
+
 DATABASES = {
 'default': {
  'ENGINE': 'django.db.backends.mysql',
@@ -97,7 +97,18 @@ DATABASES = {
     },
 }
 }
+'''
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sports',
+        'USER': 'admin',
+        'PASSWORD': 'CeC@@123@',
+        'HOST': 'localhost',
+        'PORT': '',                      # Set to empty string for default.
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
