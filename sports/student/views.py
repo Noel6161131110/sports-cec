@@ -7,14 +7,17 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 
-from .models import Student , ChestNo
+from .models import Student , ChestNo , DutyLeave
 from sportsbackend.models import Year , Participate
 
 from django.views import View
 
-from .forms import StudentCreationForm, ChestNumberUpdation
+from .forms import StudentCreationForm, ChestNumberUpdation , DutyLeaveForm, DateForm
+
 
 import csv
+
+from django.contrib.auth.decorators import user_passes_test
 
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -121,3 +124,74 @@ class CNo(View):
                 return render(request, self.template_name, {'form': form , "no" : True})
                 
         return render(request, self.template_name, {'form': form , "error" : True})
+
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
+class AddDutyLeave(View):
+    form_class = DutyLeaveForm
+    initial = {}
+    template_name = 'addduty.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            admno , year = process_admission_number(form.cleaned_data["admission_number"])
+            if(admno == -1):return render(request, self.template_name, {'form': form , "error" : True})
+            if(Student.objects.filter(admission_number = admno , passout_year = year ).exists() == False):
+                return render(request, self.template_name, {'form': form , "no" : True})
+            yearobj = Year.objects.get(selected = True)
+
+            dutyobj = form.save(commit=False)
+            dutyobj.student = Student.objects.get(admission_number = admno , passout_year = year)
+            dutyobj.year = yearobj
+            dutyobj.save()
+
+            return render(request, self.template_name, {'form': form , "done" : True})
+        return render(request, self.template_name, {'form': form , "error" : True})
+
+@method_decorator(user_passes_test(lambda u: u.is_superuser , login_url="/account/login?error=1") , name="dispatch" )
+class DutyLeaveList(View):
+
+    def get(self, request, *args, **kwargs):
+        yearobj = Year.objects.get(selected = True)
+        dutyobjs = DutyLeave.objects.all().filter(year = yearobj)
+        return render(request , "dutyleavelist.html" , {"data" : dutyobjs , "year" :yearobj})
+
+@method_decorator(user_passes_test(lambda u: u.is_superuser , login_url="/account/login?error=1") , name="dispatch" )
+class DutyLeaveConfirm(View):
+
+    def get(self, request, *args, **kwargs):
+        dutystatus = request.GET.get('confirm' , -1)
+        dutyid = request.GET.get('id' , -1)
+        if(dutystatus == -1 or dutyid == -1):return HttpResponseRedirect("/")
+        if(dutystatus == "1"):
+            if(DutyLeave.objects.filter(id = dutyid).exists()):
+                DutyLeave.objects.filter(id = dutyid).update(is_approved = True)
+        if(dutystatus == "0"):
+            if(DutyLeave.objects.filter(id = dutyid).exists()):
+                DutyLeave.objects.filter(id = dutyid).update(is_approved = False)
+        return HttpResponseRedirect("/student/dutyleavelist")
+
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
+class DutyLeaveReport(View):
+
+    form_class = DateForm
+    initial = {}
+    template_name = 'dateselectform.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            yearobj = Year.objects.get(selected = True)
+            dutyobjs = DutyLeave.objects.all().filter(year = yearobj , date = form.cleaned_data["date"] , is_approved = True )
+            return render(request , "dutyreport.html" , {"data" : dutyobjs , "date" : form.cleaned_data["date"]})
+        return HttpResponseRedirect("/")

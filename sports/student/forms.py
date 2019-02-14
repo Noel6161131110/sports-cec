@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Student, ChestNo
+from .models import Student, ChestNo , DutyLeave
 
 from django.core.validators import MaxLengthValidator
 
@@ -42,3 +42,51 @@ class ChestNumberUpdation(forms.ModelForm):
                 'class': 'form-control',
             })
 
+
+
+class DutyLeaveForm(forms.ModelForm):
+
+
+
+        admission_number = forms.CharField(required=True , max_length=8)
+        
+        class Meta:
+            model = DutyLeave
+            fields = (
+            'date',
+            'hour',
+            )
+        
+        def __init__(self, *args, **kwargs):
+            super(DutyLeaveForm, self).__init__(*args, **kwargs)
+            self.fields['admission_number'].widget.attrs.update({
+                    'class': 'form-control',
+                })
+            self.fields['date'].widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder' : "Enter Date as Month/Date/Year"
+                })
+            self.fields['hour'].widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder' : "Enter Comma Sperated Hours"
+                })
+                
+                
+class DateForm(forms.ModelForm):
+
+
+        class Meta:
+            model = DutyLeave
+            fields = (
+            'date',
+            )
+        
+        def __init__(self, *args, **kwargs):
+            super(DateForm, self).__init__(*args, **kwargs)
+            self.fields['date'].widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder' : "Enter Date as Month/Date/Year"
+                })
+
+                
+                    

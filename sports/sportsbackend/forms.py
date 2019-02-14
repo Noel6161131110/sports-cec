@@ -90,4 +90,4 @@ class StudentReportForm(forms.Form):
             self.fields['admission_number'].widget.attrs.update({
                     'class': 'form-control',
                 })
-        
+

@@ -1,0 +1,53 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+<br>
+<h2 class="signuptext" align = center>Duty Leave Report for {{date}} </h2>
+
+<table class="table table-striped" id="resulttable">
+  <thead>
+    <tr>
+      <th scope="col">Admission No</th>
+      <th scope="col">Name</th>
+      <th scope="col">Date</th>
+      <th scope="col">Hours</th>
+    </tr>
+  </thead>
+  <tbody>
+
+{% for i in data %}
+
+    <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
+      <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
+      <td>{{i.student.name}}</td>
+      <td>{{i.date}}</td>
+       <td>{{i.hour}}</td>
+      
+    </tr>
+
+
+   <br>
+
+{% endfor %}
+
+  
+  </tbody>
+</table>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
