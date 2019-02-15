@@ -78,6 +78,19 @@ class AdmissionNumberForm(forms.ModelForm):
                     'class': 'form-control',
                 })
 
+
+class YearSelectForm(forms.Form):
+
+
+        year = forms.CharField(max_length=4)
+        
+        def __init__(self, *args, **kwargs):
+            super(YearSelectForm, self).__init__(*args, **kwargs)
+            self.fields['year'].widget.attrs.update({
+                    'class': 'form-control',
+                })
+
+
 class StudentReportForm(forms.Form):
 
 

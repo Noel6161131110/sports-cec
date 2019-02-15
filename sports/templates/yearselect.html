@@ -1,33 +1,12 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block body %}
 
-    <h2 class="signuptext" align = center>CEC Sports Student Participation Deletion Form </h2>
+    <h2 class="signuptext" align = center>Current Selected Year is {{year.year}} </h2>
 
-
-{% if error %}
-
-<h4> Student Not Registered For Event </h4>
-
-{% endif %}
-
-{% if no %}
-
-<h4> Student Not Found </h4>
-
-{% endif %}
-
-
-{% if removed %}
-
-<h4> Student Succesfully Removed </h4>
-
-{% endif %}
-
-  <div class="signupform">
-    <form action="/app/disqualify/" method="get">
+    <div class="signupform">
+    <form action="/app/selectyear/" method="post">
    {% csrf_token %}
     {% for field in form %}
         <div class="fieldWrapper">
@@ -37,14 +16,12 @@
             <p class="help">{{ field.help_text|safe }}</p>
             {% endif %}
         </div>
-        <br>
     {% endfor %}
-
+<br>
        <input type="submit" class="btn btn-primary" value="Submit">
 
     </form>
   </div>
 
 {% endblock %}
-
 
