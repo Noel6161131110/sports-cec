@@ -1,10 +1,24 @@
 
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+    <h2 class="signuptext" align = center>CEC Sports Student Participation Deletion Form </h2>
+
 
 {% if error %}
 
 <h4> Student Not Registered For Event </h4>
 
 {% endif %}
+
+{% if no %}
+
+<h4> Student Not Found </h4>
+
+{% endif %}
+
 
 {% if removed %}
 
@@ -23,11 +37,14 @@
             <p class="help">{{ field.help_text|safe }}</p>
             {% endif %}
         </div>
+        <br>
     {% endfor %}
 
        <input type="submit" class="btn btn-primary" value="Submit">
 
     </form>
   </div>
+
+{% endblock %}
 
 

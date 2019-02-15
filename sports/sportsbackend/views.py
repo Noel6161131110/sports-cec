@@ -152,12 +152,13 @@ class Disqualify(View):
         if form.is_valid():
             admno , year = process_admission_number(form.cleaned_data['admission_number'])
             participate = form.save(commit=False)
+            if(Student.objects.filter(admission_number = admno , passout_year = year).exists() == False):
+                return render(request, self.template_name, {'form': form , "no" : True})         
             student = Student.objects.get(admission_number = admno , passout_year = year)
             yearobj = Year.objects.get(selected = True)
             participateobjs = Participate.objects.filter(student = student , year = yearobj , event = participate.event )
             if(participateobjs.exists()):
                 return render(request , self.second_template_name , {"student" : student , "event" : participate.event } ) 
-        form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form , "error" : True})         
 
 
@@ -169,13 +170,13 @@ class Disqualify(View):
         student  = Student.objects.get(id = studentid)
         event = Event.objects.get(id = eventid)
         yearobj = Year.objects.get(selected = True)
-        cposition = Participate.objects.get(student = student , year = yearobj ,  event = event).position
-        Participate.objects.get(student = student , year = yearobj ,  event = event).delete()
-        if cposition == 0:
-            form = self.form_class(initial=self.initial)
-            return render(request, self.template_name, {'form': form , "removed" : True})          
-        for i in Participate.objects.all().filter(event = event , year = yearobj , position__gt = cposition  ):
-            Participate.objects.filter(student = i.student , year = yearobj ,  event = event).update(position = i.position - 1)
+        
+        Participate.objects.all().filter(student = student , year = yearobj , event = event).delete()
+
+        for i in range(1,4):
+            if(Participate.objects.all().filter(  year = yearobj , event = event , position = i).count() > 0):
+                continue
+            Participate.objects.all().filter(  year = yearobj , event = event , position = i+1).update(position = i)
         
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form , "removed" : True})
