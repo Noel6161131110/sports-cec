@@ -7,7 +7,7 @@ from .models import Event, Year, Participate
 
 from django.views import View
 
-from .forms import EventCreateForm, ParticipationForm, EventSelectForm, AdmissionNumberForm , StudentReportForm
+from .forms import EventCreateForm, ParticipationForm, EventSelectForm, AdmissionNumberForm , StudentReportForm, YearSelectForm
 
 from student.views import process_admission_number
 
@@ -250,3 +250,24 @@ class FieldCard(View):
             if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
             return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })
+
+
+class SelectYear(View):
+    form_class = YearSelectForm
+    initial = {}
+    template_name = 'yearselect.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        yearobj = Year.objects.get(selected = True)
+        return render(request, self.template_name, {'form': form , "year" : yearobj})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            year = form.cleaned_data["year"]
+            if(Year.objects.filter(year = year).exists() == False):
+                Year(year = year).save()
+            Year.objects.all().update(selected = False)
+            Year.objects.filter(year=year).update(selected=True)
+            return HttpResponseRedirect("/app/selectyear")
