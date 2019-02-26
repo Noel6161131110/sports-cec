@@ -16,6 +16,7 @@
       <th scope="col">Name</th>
       <th scope="col">Date</th>
       <th scope="col">Hours</th>
+      <th scope="col">Reason</th>
       <th scope="col">Status</th>
       <th scope="col">Action</th>
     </tr>
@@ -29,6 +30,7 @@
       <td>{{i.student.name}}</td>
       <td>{{i.date}}</td>
        <td>{{i.hour}}</td>
+       <td>{{i.reason}}</td>
       {% if i.is_approved %}
         <td>Approved</td>
       <td> <a href="/student/dutyleaveconfirm?confirm=0&id={{i.id}}" > Reject  </td>

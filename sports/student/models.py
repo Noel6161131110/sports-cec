@@ -15,6 +15,7 @@ class DutyLeave(models.Model):
     date = models.DateField()
     year = models.ForeignKey('sportsbackend.Year' , on_delete=models.CASCADE)
     hour = models.CharField(max_length=100 )
+    reason = models.TextField()
     is_approved = models.BooleanField(default = False)
 
 

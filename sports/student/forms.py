@@ -55,6 +55,7 @@ class DutyLeaveForm(forms.ModelForm):
             fields = (
             'date',
             'hour',
+            'reason',
             )
         
         def __init__(self, *args, **kwargs):
@@ -69,6 +70,10 @@ class DutyLeaveForm(forms.ModelForm):
             self.fields['hour'].widget.attrs.update({
                     'class': 'form-control',
                     'placeholder' : "Enter Comma Sperated Hours"
+                })
+            self.fields['reason'].widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder' : "Enter Reason For Duty Leave Application"
                 })
                 
                 

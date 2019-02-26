@@ -150,7 +150,7 @@ class AddDutyLeave(View):
             dutyobj.year = yearobj
             dutyobj.save()
 
-            return render(request, self.template_name, {'form': form , "done" : True})
+            return render(request, self.template_name, {'form': form , "done" : True , "student" : dutyobj.student , "date" : dutyobj.date})
         return render(request, self.template_name, {'form': form , "error" : True})
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser , login_url="/account/login?error=1") , name="dispatch" )

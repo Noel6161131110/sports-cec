@@ -12,6 +12,7 @@
 <table class="table table-striped" id="resulttable">
   <thead>
     <tr>
+      <th scope="col">SNo</th>
       <th scope="col">Admission No</th>
       <th scope="col">Name</th>
       <th scope="col">Chest No</th>
@@ -23,7 +24,9 @@
 {% for i in data %}
 
     <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
-      <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
+      <th scope="row">{{forloop.counter}}</th>
+
+      <td >{{i.student.admission_number}}/{{i.student.passout_year}}</td>
       <td>{{i.student.name}}</td>
       {% if i.cno.cno %}
         <td>{{i.cno.cno}}</td>
