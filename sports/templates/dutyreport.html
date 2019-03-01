@@ -7,13 +7,19 @@
 
 
 <br>
-<h2 class="signuptext" align = center>Duty Leave Report for {{date}} </h2>
+<h2 class="signuptext" align = center>Duty Leave Report from {{datefrom}} to {{dateto}} </h2>
+{% if student  %}
+<h5 class="signuptext" align = center> Student Name {{student.name}} | Admission Number {{student.admission_number}}/{{student.passout_year}} </h5>
+{% endif %}
+
 <br>
 <table class="table table-striped" id="resulttable">
   <thead>
     <tr>
+    {% if student  %}
       <th scope="col">Admission No</th>
       <th scope="col">Name</th>
+    {% endif %}
       <th scope="col">Date</th>
       <th scope="col">Hours</th>
     </tr>
@@ -23,8 +29,10 @@
 {% for i in data %}
 
     <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
+      {% if student  %}
       <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
       <td>{{i.student.name}}</td>
+      {% endif %}
       <td>{{i.date}}</td>
        <td>{{i.hour}}</td>
       

@@ -191,7 +191,12 @@ class DutyLeaveReport(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
+            admno , year = process_admission_number(form.cleaned_data["admission_number"])
             yearobj = Year.objects.get(selected = True)
-            dutyobjs = DutyLeave.objects.all().filter(year = yearobj , date = form.cleaned_data["date"] , is_approved = True )
-            return render(request , "dutyreport.html" , {"data" : dutyobjs , "date" : form.cleaned_data["date"]})
+            dutyobjs = DutyLeave.objects.all().filter(year = yearobj , date__range=[form.cleaned_data["datefrom"] , form.cleaned_data["dateto"]] , is_approved = True )
+            student = False
+            if(Student.objects.filter(admission_number = admno , passout_year = year ).exists()):
+                student = Student.objects.get(admission_number = admno , passout_year = year)
+                dutyobjs =  dutyobjs.filter(student = student)
+            return render(request , "dutyreport.html" , {  "student" : student , "data" : dutyobjs , "datefrom" : form.cleaned_data["datefrom"] , "dateto" : form.cleaned_data["dateto"] })
         return HttpResponseRedirect("/")

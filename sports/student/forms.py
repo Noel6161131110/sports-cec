@@ -79,18 +79,28 @@ class DutyLeaveForm(forms.ModelForm):
                 
 class DateForm(forms.ModelForm):
 
+        datefrom = forms.DateField()
+        dateto = forms.DateField()
+        admission_number = forms.CharField(required=False , max_length=8)
 
         class Meta:
             model = DutyLeave
             fields = (
-            'date',
             )
         
         def __init__(self, *args, **kwargs):
             super(DateForm, self).__init__(*args, **kwargs)
-            self.fields['date'].widget.attrs.update({
+            self.fields['datefrom'].widget.attrs.update({
                     'class': 'form-control',
-                    'placeholder' : "Enter Date as Month/Date/Year"
+                    'placeholder' : "Enter Starting Date as Month/Date/Year"
+                })
+            self.fields['dateto'].widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder' : "Enter Ending Date as Month/Date/Year"
+                })
+            self.fields['admission_number'].widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder' : "Enter Admission Number for Induvidual Reports"
                 })
 
                 
