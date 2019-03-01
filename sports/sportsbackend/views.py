@@ -133,7 +133,7 @@ class StudentReport(View):
                 return render(request, self.template_name, {'form': form , "error" : True})
             student =Student.objects.get(admission_number = admno , passout_year = year)
             participateobjs = Participate.objects.all().filter(student = student )
-            return render(request,self.second_template_name , {"data" : participateobjs , "name" : student.name})
+            return render(request,self.second_template_name , {"data" : participateobjs , 'student' : student})
 
 
 @method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
@@ -200,7 +200,7 @@ class EventReport(View):
         if form.is_valid():
             participate = form.save(commit=False)
             yearobj = Year.objects.get(selected = True)
-            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-position')
+            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('position')
             if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
             return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })

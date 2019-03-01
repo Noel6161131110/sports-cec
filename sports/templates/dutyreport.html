@@ -16,7 +16,7 @@
 <table class="table table-striped" id="resulttable">
   <thead>
     <tr>
-    {% if student  %}
+    {% if not student  %}
       <th scope="col">Admission No</th>
       <th scope="col">Name</th>
     {% endif %}
@@ -29,7 +29,7 @@
 {% for i in data %}
 
     <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
-      {% if student  %}
+      {% if not student  %}
       <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
       <td>{{i.student.name}}</td>
       {% endif %}
