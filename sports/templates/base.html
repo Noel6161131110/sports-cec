@@ -23,6 +23,9 @@
 
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+
+
   <!--
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
@@ -56,7 +59,21 @@ To Be Implemented
 
 <script src="{% static 'js/jquery3.js' %}" ></script>
 <script src="{% static 'js/popper.min.js' %}" ></script>
-<script src="{% static 'js/bootstrap.min.js' %}" ></script>
+<script src="{% static 'js/bootstrap.min.js' %}" ></script>    
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+
+<script>
+  $(function () {
+    $(".datepicker").datepicker({
+        format:'mm/dd/yyyy',
+  });
+  });
+</script>
+
+
+  
 
 {% block javascript %}
 {% endblock %}
