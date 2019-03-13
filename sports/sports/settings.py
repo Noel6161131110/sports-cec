@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ')wgi$1&20-9%ihz1dh7*rxs)366$qsv%k9__@3l(+96&0@o0lb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -79,14 +79,14 @@ WSGI_APPLICATION = 'sports.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+'''
 DATABASES = {
 'default': {
  'ENGINE': 'django.db.backends.mysql',
@@ -100,7 +100,7 @@ DATABASES = {
     },
 }
 }
-'''
+
 
 DATABASES = {
     'default': {
@@ -112,7 +112,7 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
-
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

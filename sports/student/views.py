@@ -153,7 +153,7 @@ class AddDutyLeave(View):
             return render(request, self.template_name, {'form': form , "done" : True , "student" : dutyobj.student , "date" : dutyobj.date})
         return render(request, self.template_name, {'form': form , "error" : True})
 
-@method_decorator(user_passes_test(lambda u: u.is_superuser , login_url="/account/login?error=1") , name="dispatch" )
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class DutyLeaveList(View):
 
     def get(self, request, *args, **kwargs):
@@ -200,3 +200,30 @@ class DutyLeaveReport(View):
                 dutyobjs =  dutyobjs.filter(student = student)
             return render(request , "dutyreport.html" , {  "student" : student , "data" : dutyobjs , "datefrom" : form.cleaned_data["datefrom"] , "dateto" : form.cleaned_data["dateto"] })
         return HttpResponseRedirect("/")
+
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
+class DutyLeaveDelete(View):
+
+    def get(self, request, *args, **kwargs):
+        delid = request.GET.get("id" , -1)
+        if(delid == -1):return HttpResponseRedirect("/")
+        DutyLeave.objects.get(id= delid).delete()
+        return HttpResponseRedirect("/student/dutyleavelist/")
+
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
+class DutyLeaveEdit(View):
+
+    form_class = DutyLeaveForm
+    initial = {}
+    template_name = 'addduty.html'
+
+    def get(self, request, *args, **kwargs):
+        delid = request.GET.get("id" , -1)
+        if(delid == -1):return HttpResponseRedirect("/")
+        if(DutyLeave.objects.filter(id=delid).count() == 0 ):return HttpResponseRedirect("/")
+        dutyobj = DutyLeave.objects.get(id=delid)
+        form = self.form_class(initial={ "admission_number" : str(dutyobj.student.admission_number) + "/" + str(dutyobj.student.passout_year) , "date" : dutyobj.date , "hour" : dutyobj.hour , "reason" : dutyobj.reason  })
+        DutyLeave.objects.get(id= delid).delete()
+        return render(request, self.template_name, {'form': form})
