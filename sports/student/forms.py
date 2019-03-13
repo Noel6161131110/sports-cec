@@ -64,7 +64,7 @@ class DutyLeaveForm(forms.ModelForm):
                     'class': 'form-control',
                 })
             self.fields['date'].widget.attrs.update({
-                    'class': 'form-control',
+                    'class': 'form-control datepicker',
                     'placeholder' : "Enter Date as Month/Date/Year"
                 })
             self.fields['hour'].widget.attrs.update({
@@ -91,11 +91,11 @@ class DateForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super(DateForm, self).__init__(*args, **kwargs)
             self.fields['datefrom'].widget.attrs.update({
-                    'class': 'form-control',
-                    'placeholder' : "Enter Starting Date as Month/Date/Year"
+            'class': 'form-control datepicker',
+            'placeholder' : "Enter Starting Date as Month/Date/Year"
                 })
             self.fields['dateto'].widget.attrs.update({
-                    'class': 'form-control',
+                    'class': 'form-control datepicker',
                     'placeholder' : "Enter Ending Date as Month/Date/Year"
                 })
             self.fields['admission_number'].widget.attrs.update({

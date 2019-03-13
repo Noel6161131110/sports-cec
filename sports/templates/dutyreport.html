@@ -20,6 +20,7 @@
       <th scope="col">Admission No</th>
       <th scope="col">Name</th>
     {% endif %}
+      <th scope="col">Reason</th>
       <th scope="col">Date</th>
       <th scope="col">Hours</th>
     </tr>
@@ -33,6 +34,7 @@
       <th scope="row">{{i.student.admission_number}}/{{i.student.passout_year}}</th>
       <td>{{i.student.name}}</td>
       {% endif %}
+      <td>{{i.reason}}</td>
       <td>{{i.date}}</td>
        <td>{{i.hour}}</td>
       
@@ -42,10 +44,13 @@
 
 {% endfor %}
 
-  
   </tbody>
 </table>
-
+<br>
+<br>
+<h4 class="signuptext" align = center> CERTIFICATION </h4>
+<h5 class="signuptext" align = center> <p> This is to certify that the above said volunteer was assigned duty in connection with the above mentioned events </p>  </h5>
+  
 
 
 
