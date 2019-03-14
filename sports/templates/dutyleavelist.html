@@ -33,11 +33,15 @@
        <td>{{i.reason}}</td>
       {% if i.is_approved %}
         <td>Approved</td>
-      <td> <a href="/student/dutyleaveconfirm?confirm=0&id={{i.id}}" > Reject  </td>
+      <td> <a href="/student/dutyleaveconfirm?confirm=0&id={{i.id}}" > Reject </a>
+      <a href="/student/dutyleavedelete?id={{i.id}}" > Delete </a>
+      <a href="/student/dutyleaveedit?id={{i.id}}" > Edit </a> </td>
       
       {% else %}
         <td>Rejected</td>
-        <td> <a href="/student/dutyleaveconfirm?confirm=1&id={{i.id}}" > Approve  </td>
+        <td> <a href="/student/dutyleaveconfirm?confirm=1&id={{i.id}}" > Approve </a> 
+              <a href="/student/dutyleavedelete?id={{i.id}}" > Delete </a>
+      <a href="/student/dutyleaveedit?id={{i.id}}" > Edit </a>  </td>
       
       {% endif %}      
 
