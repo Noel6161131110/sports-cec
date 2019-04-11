@@ -63,7 +63,7 @@ class AdmissionNumberForm(forms.ModelForm):
         class Meta:
             model = Participate
             fields = (
-            'position',
+            'pos',
 
             )
         admission_number = forms.CharField(required=True , max_length=8)
@@ -71,7 +71,7 @@ class AdmissionNumberForm(forms.ModelForm):
         
         def __init__(self, *args, **kwargs):
             super(AdmissionNumberForm, self).__init__(*args, **kwargs)
-            self.fields['position'].widget.attrs.update({
+            self.fields['pos'].widget.attrs.update({
                     'class': 'form-control',
                 })
             self.fields['admission_number'].widget.attrs.update({

@@ -3,7 +3,7 @@ from django.http import HttpResponse,HttpResponseRedirect, JsonResponse
 
 from django.contrib.auth import authenticate, login
 
-from .models import Event, Year, Participate
+from .models import Event, Year, Participate , Position
 
 from django.views import View
 
@@ -66,10 +66,12 @@ class CreateParticipation(View):
                 participate.student = student
                 participate.year = yearobj
                 participate.cno = cobj
+                participate.pos = Position.objects.get(position = "Registered")
                 participate.save()
                 return render(request, self.template_name, {'form': self.form_class(initial=self.initial) , "added" : True , "student" : participate.student.name , "event" : participate.event.event_name  })
             return render(request, self.template_name, {'form': form , "error" : True})
         return render(request, self.template_name, {'form': form , "error" : True})
+
 
 
 @method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
@@ -89,7 +91,7 @@ class ConfirmParticipationSelect(View):
         if form.is_valid():
             participate = form.save(commit=False)
             yearobj = Year.objects.get(selected = True)
-            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-position')
+            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-pos')
             if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
             form = self.second_form_class(initial=self.initial)
@@ -104,12 +106,12 @@ class ConfirmParticipationSelect(View):
             eventid = request.POST.get("event",0)
             eventobj = Event.objects.get(id = eventid)
             yearobj = Year.objects.get(selected = True)
-            participateobjs = Participate.objects.all().filter(event = eventobj , year = yearobj ).order_by('-position')
+            participateobjs = Participate.objects.all().filter(event = eventobj , year = yearobj ).order_by('-pos')
             if(Student.objects.filter(admission_number = admno , passout_year = year).count() == 0):
                 return render(request , self.second_template_name , {"data" : participateobjs , "form" : form , "event" : eventid , "eventname" : eventobj.event_name , "error2" : True})                
             student = Student.objects.get(admission_number = admno , passout_year = year)
             participateobj = participateobjs.filter(student = student)
-            participateobj.update(position = form.cleaned_data['position'])
+            participateobj.update(pos = form.cleaned_data['pos'])
             return render(request , self.second_template_name , {"year" : yearobj ,"data" : participateobjs , "form" : form  , "event" : eventid , "eventname" : eventobj.event_name})
 
 
@@ -173,10 +175,10 @@ class Disqualify(View):
         
         Participate.objects.all().filter(student = student , year = yearobj , event = event).delete()
 
-        for i in range(1,4):
-            if(Participate.objects.all().filter(  year = yearobj , event = event , position = i).count() > 0):
-                continue
-            Participate.objects.all().filter(  year = yearobj , event = event , position = i+1).update(position = i)
+        #for i in range(1,4):
+        #    if(Participate.objects.all().filter(  year = yearobj , event = event , position = i).count() > 0):
+        #        continue
+        #    Participate.objects.all().filter(  year = yearobj , event = event , position = i+1).update(position = i)
         
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form , "removed" : True})
@@ -200,7 +202,7 @@ class EventReport(View):
         if form.is_valid():
             participate = form.save(commit=False)
             yearobj = Year.objects.get(selected = True)
-            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('position')
+            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('pos')
             if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
             return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })
@@ -224,7 +226,7 @@ class TrackCard(View):
         if form.is_valid():
             participate = form.save(commit=False)
             yearobj = Year.objects.get(selected = True)
-            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-position')
+            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj )
             if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
             return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })
@@ -247,7 +249,7 @@ class FieldCard(View):
         if form.is_valid():
             participate = form.save(commit=False)
             yearobj = Year.objects.get(selected = True)
-            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-position')
+            participateobjs = Participate.objects.all().filter(event = participate.event , year = yearobj ).order_by('-pos')
             if(participateobjs.count() == 0 ):
                 return render(request, self.template_name, {'form': form , "error" :True})
             return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })

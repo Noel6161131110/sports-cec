@@ -1,6 +1,6 @@
 from django.db import models
 
-PARTICIPATION_CHOICES = (
+PARTICIPATION_CHOICES = [
 (0,'Registered'),
 (1,'First'),
 (2,'Second'),
@@ -12,7 +12,7 @@ PARTICIPATION_CHOICES = (
 (8,'State'),
 (9,'National'),
 (10,'International'),
-)
+]
 
 class Event(models.Model):
     event_name = models.CharField(max_length = 50)
@@ -26,9 +26,18 @@ class Year(models.Model):
     def __str__(self):
         return str(self.year)
 
+class Position(models.Model):
+    position = models.CharField(max_length = 100)
+
+    def __str__(self):
+        return self.position
+
+
 class Participate(models.Model):
     student = models.ForeignKey('student.Student' , on_delete=models.CASCADE)
     event = models.ForeignKey("Event" , on_delete=models.CASCADE)
     year = models.ForeignKey("Year" , on_delete=models.CASCADE)
-    position = models.IntegerField( choices=PARTICIPATION_CHOICES, default=0)
+    #position = models.IntegerField( choices=PARTICIPATION_CHOICES, default=0)
     cno = models.ForeignKey('student.ChestNo' , on_delete=models.CASCADE , null=True )
+    pos = models.ForeignKey(Position , on_delete=models.CASCADE , null=True , blank = True )
+    
