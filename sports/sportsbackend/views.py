@@ -262,6 +262,8 @@ class SelectYear(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
+        if(Year.objects.all().count() == 0):
+            Year(year = 2018 , selected = True).save()
         yearobj = Year.objects.get(selected = True)
         return render(request, self.template_name, {'form': form , "year" : yearobj})
 
