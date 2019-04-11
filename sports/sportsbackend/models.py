@@ -37,7 +37,7 @@ class Participate(models.Model):
     student = models.ForeignKey('student.Student' , on_delete=models.CASCADE)
     event = models.ForeignKey("Event" , on_delete=models.CASCADE)
     year = models.ForeignKey("Year" , on_delete=models.CASCADE)
-    #position = models.IntegerField( choices=PARTICIPATION_CHOICES, default=0)
+    position = models.IntegerField( choices=PARTICIPATION_CHOICES, default=0 , null=True , blank = True)
     cno = models.ForeignKey('student.ChestNo' , on_delete=models.CASCADE , null=True )
     pos = models.ForeignKey(Position , on_delete=models.CASCADE , null=True , blank = True )
     
