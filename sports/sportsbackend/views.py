@@ -135,7 +135,14 @@ class StudentReport(View):
                 return render(request, self.template_name, {'form': form , "error" : True})
             student =Student.objects.get(admission_number = admno , passout_year = year)
             participateobjs = Participate.objects.all().filter(student = student )
-            return render(request,self.second_template_name , {"data" : participateobjs , 'student' : student})
+            report_year = False
+            if("report_year" in form.cleaned_data ):
+                try:
+                    report_year = Year.objects.get(year = form.cleaned_data["report_year"])
+                    participateobjs = participateobjs.filter(year = report_year)
+                except:
+                    pass
+            return render(request,self.second_template_name , {"data" : participateobjs , 'student' : student , "year" : report_year })
 
 
 @method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )

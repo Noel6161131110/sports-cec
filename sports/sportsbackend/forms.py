@@ -96,11 +96,13 @@ class StudentReportForm(forms.Form):
 
 
         admission_number = forms.CharField(required=True , max_length=8)
-
+        report_year = forms.IntegerField(required=False )
         
         def __init__(self, *args, **kwargs):
             super(StudentReportForm, self).__init__(*args, **kwargs)
             self.fields['admission_number'].widget.attrs.update({
                     'class': 'form-control',
                 })
-
+            self.fields['report_year'].widget.attrs.update({
+                    'class': 'form-control',
+                })
