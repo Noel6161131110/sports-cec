@@ -1,0 +1,65 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+<h2 class="signuptext" align = center>Report for {{year.year}} </h2>
+
+
+<br>
+{% for result in results %}
+
+<h2 class="signuptext" align = center>Event {{result.event.event_name}} </h2>
+<br>
+<table class="table table-striped" id="resulttable">
+  <thead>
+    <tr>
+      <th scope="col">SNo</th>
+      <th scope="col">Admission No</th>
+      <th scope="col">Name</th>
+      <th scope="col">Chest No</th>
+      <th scope="col">Position</th>
+    </tr>
+  </thead>
+  <tbody>
+
+{% for i in result.participants %}
+
+    <tr class="clickable-row" value="{{i.student.admission_number}}/{{i.student.passout_year}}" >
+      <th scope="row">{{forloop.counter}}</th>
+
+      <td >{{i.student.admission_number}}/{{i.student.passout_year}}</td>
+      <td>{{i.student.name}}</td>
+      {% if i.cno.cno %}
+        <td>{{i.cno.cno}}</td>
+      {% else %}
+        <td>UND</td>
+      {% endif %}      
+      <td>{{i.pos}}</td>
+      
+    </tr>
+
+
+
+{% endfor %}
+
+
+  
+  </tbody>
+</table>
+
+{% endfor %}
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+

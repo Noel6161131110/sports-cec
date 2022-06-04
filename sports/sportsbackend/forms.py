@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Event,Participate
+from .models import Event,Participate, Year
 
 from django.core.validators import MaxLengthValidator
 
@@ -106,3 +106,13 @@ class StudentReportForm(forms.Form):
             self.fields['report_year'].widget.attrs.update({
                     'class': 'form-control',
                 })
+
+
+class ExistingYearSelect(forms.Form):
+    year = forms.ModelChoiceField(queryset=Year.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(ExistingYearSelect, self).__init__(*args, **kwargs)
+        self.fields['year'].widget.attrs.update({
+                'class': 'form-control',
+            })

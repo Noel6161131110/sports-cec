@@ -7,7 +7,7 @@ from .models import Event, Year, Participate , Position
 
 from django.views import View
 
-from .forms import EventCreateForm, ParticipationForm, EventSelectForm, AdmissionNumberForm , StudentReportForm, YearSelectForm
+from .forms import EventCreateForm, ExistingYearSelect, ParticipationForm, EventSelectForm, AdmissionNumberForm , StudentReportForm, YearSelectForm
 
 from student.views import process_admission_number
 
@@ -261,7 +261,7 @@ class FieldCard(View):
                 return render(request, self.template_name, {'form': form , "error" :True})
             return render(request , self.second_template_name , { "year" : yearobj , "data" : participateobjs , "eventname" : participate.event.event_name })
 
-
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
 class SelectYear(View):
     form_class = YearSelectForm
     initial = {}
@@ -283,3 +283,30 @@ class SelectYear(View):
             Year.objects.all().update(selected = False)
             Year.objects.filter(year=year).update(selected=True)
             return HttpResponseRedirect("/app/selectyear")
+
+@method_decorator(login_required(login_url="/account/login?error=1") , name="dispatch" )
+class YearlyReport(View):
+    form_class = ExistingYearSelect
+    initial = {}
+    template_name = "yearly_report_select.html"
+
+    def get(self,request,*args,**kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self,request,*args,**kwargs):
+        year = self.request.POST.get("year")
+        if not year:
+            return HttpResponseRedirect("/")
+        year = Year.objects.filter(id=year).first()
+        if not year:
+            return HttpResponseRedirect("/")
+        return_data = []
+        for event in Event.objects.all():
+            data = {}
+            participations = Participate.objects.filter(event=event,year=year) 
+            data["event"] = event
+            data["participants"] = participations
+            if participations.exists():
+                return_data.append(data)
+        return render(request, "yearly_report.html" , {"year" : year , "results" : return_data})
