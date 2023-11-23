@@ -22,8 +22,9 @@ def logout_view(request):
     return HttpResponseRedirect("/")
 
 
-@method_decorator(user_passes_test(lambda u: u.is_superuser , login_url="/account/login?error=1") , name="dispatch" )
+#@method_decorator(user_passes_test(lambda u: u.is_superuser , login_url="/account/login?error=1") , name="dispatch" )
 class SignupView(View):
+
     form_class = UserCreationForm
     initial = {}
     template_name = 'signup.html'
@@ -33,16 +34,21 @@ class SignupView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data["password"])
-            user.save()
+        try:
+            form = self.form_class(request.POST)
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.set_password(form.cleaned_data["password"])
+                user.save()
 
-            return HttpResponseRedirect('/')
+                return HttpResponseRedirect('/')
+        except Exception as e:
+            print(e)
+            return HttpResponse("Error")
 
 
         return render(request, self.template_name, {'form': form , "error" : True})
+
 
 
 class LoginView(View):

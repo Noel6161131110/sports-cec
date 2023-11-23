@@ -104,14 +104,15 @@ DATABASES = {
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sports',
-        'USER': 'admin',
-        'PASSWORD': 'CeC@@123@',
-        'HOST': 'localhost',
-        'PORT': '',                      # Set to empty string for default.
-    }
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': 'sportscec',
+    'USER': 'sportscec2023',
+    'PASSWORD': 'b6sctPCe0LTi',
+    'HOST': 'ep-tight-wave-75663403.us-east-2.aws.neon.tech',
+    'PORT': '5432',
+    'OPTIONS': {'sslmode': 'require'},
+  }
 }
 
 # Password validation
